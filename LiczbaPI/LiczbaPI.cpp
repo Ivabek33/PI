@@ -41,6 +41,46 @@ double calkaFragment(double poczatek, double koniec, int kroki) {
     return wynik;
 }
 
+
+/**
+ * @brief Oblicza wartosc calki oznaczonej z wykorzystaniem wielowatkowosci.
+ *
+ * Dzielenie obliczen na fragmenty przy uzyciu watkow.
+ *
+ * @param poczatek Poczatek przedzialu calkowania.
+ * @param koniec Koniec przedzialu calkowania.
+ * @param kroki Laczna liczba krokow podzialu przedzialu.
+ * @param liczbaWatkow Liczba watkow do zrownoleglenia obliczen.
+ * @return double Wynik calki dla calego przedzialu [poczatek, koniec].
+ */
+double calkaRownolegla(double poczatek, double koniec, int kroki, int liczbaWatkow) {
+    vector<thread> watki;          ///< Wektor przechowujacy watki.
+    vector<double> wyniki(liczbaWatkow, 0.0); ///< Wektor wynikow z kazdego watku.
+
+    double szerokoscSegmentu = (koniec - poczatek) / liczbaWatkow;
+    int krokiNaWatek = kroki / liczbaWatkow;
+
+    for (int i = 0; i < liczbaWatkow; ++i) {
+        double startWatek = poczatek + i * szerokoscSegmentu;
+        double koniecWatek = startWatek + szerokoscSegmentu;
+
+        watki.emplace_back([&, i, startWatek, koniecWatek]() {
+            wyniki[i] = calkaFragment(startWatek, koniecWatek, krokiNaWatek);
+            });
+    }
+
+    for (auto& watek : watki) {
+        watek.join(); ///< Czekamy na zakonczenie wszystkich watkow.
+    }
+
+    double wynikCalkowity = 0.0;
+    for (double czesc : wyniki) {
+        wynikCalkowity += czesc;
+    }
+
+    return wynikCalkowity;
+}
+
 int main()
 {
     
