@@ -83,6 +83,15 @@ double calkaRownolegla(double poczatek, double koniec, int kroki, int liczbaWatk
 
 int main()
 {
-    
+
+    double poczatek = 0.0;
+    double koniec = 1.0;
+    int kroki;
+    int maksWatkow = 50;   ///< Maksymalna liczba watkow.
+
+    // Prosimy uzytkownika o wprowadzenie liczby krokow
+    cout << "Podaj liczbe podzialow przedzialu calkowania: ";
+    cin >> kroki;
+
 }
 
