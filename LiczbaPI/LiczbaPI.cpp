@@ -93,5 +93,20 @@ int main()
     cout << "Podaj liczbe podzialow przedzialu calkowania: ";
     cin >> kroki;
 
+    
+    // Umożliwienie obliczeń przy użyciu różnych liczb wątków
+    for (int liczbaWatkow = 1; liczbaWatkow <= maksWatkow; ++liczbaWatkow) {
+        auto czasPoczatkowy = chrono::high_resolution_clock::now();
+        double wynik = calkaRownolegla(poczatek, koniec, kroki, liczbaWatkow);
+        auto czasKoncowy = chrono::high_resolution_clock::now();
+
+        chrono::duration<double> czas = czasKoncowy - czasPoczatkowy;
+
+        cout << "Watki: " << liczbaWatkow
+            << ", Wynik: " << wynik
+            << ", Czas: " << czas.count() << " sekund\n";
+    }
+
+    return 0;
 }
 
